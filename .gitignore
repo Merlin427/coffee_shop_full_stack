@@ -1,7 +1,8 @@
 frontend/node_modules/
-.vscode
-__pycache__
-venv
+.vscode/
+__pycache__/
+venv/
+.idea
 
 
 .DS_Store
