@@ -23,32 +23,30 @@ API_AUDIENCE = 'http://localhost:5000'
 db_drop_and_create_all()
 
 ## ROUTES
-#@app.route('/drinks')
-#def drinks():
-#    print('hello world')
+@app.route('/drinks', methods=['GET'])
+def get_drinks():
+    drinks = Drink.query.all()
 
-#    return 'hello'
-
-
-
-'''
-@TODO implement endpoint
-    GET /drinks
-        it should be a public endpoint
-        it should contain only the drink.short() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-'''
+    return jsonify({
+    'success':True,
+    'drinks': [drink.short() for drink in drinks]
+    }), 200
 
 
-'''
-@TODO implement endpoint
-    GET /drinks-detail
-        it should require the 'get:drinks-detail' permission
-        it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-'''
+
+
+@app.route('/drinks-detail', methods=['GET'])
+@requires_auth('get:drinks-datail')
+def get_drinks_detail(payload):
+    drinks = Drink.query.all()
+
+    return jsonify({
+    'success': True,
+    'drinks-detail':[drink.long() for drink in drinks]
+    }), 200
+
+
+
 
 
 '''
