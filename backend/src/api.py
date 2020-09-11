@@ -39,7 +39,7 @@ def get_drinks():
 
 
 @app.route('/drinks-detail', methods=['GET'])
-@requires_auth('get:drinks-datail')
+@requires_auth('get:drinks-detail')
 def get_drinks_detail(payload):       #pass in payload
     drinks = Drink.query.all()
 
