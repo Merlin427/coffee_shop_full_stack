@@ -89,7 +89,7 @@ def modify_drink(payload, id):
         drink.title = data['title']
 
     if 'recipe' in data:
-        drink.recipe = data['recipe']
+        drink.recipe = json.dumps(data['recipe'])
 
     drink.update()
 
@@ -178,4 +178,4 @@ def auth_error(error):
         "success": False,
         "error": error.status_code,
         "message": error.error['description']
-    }), error.status_code
+    }), 401
