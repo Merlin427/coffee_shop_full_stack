@@ -26,14 +26,14 @@ db_drop_and_create_all()
 
 
 
-@app.route('/drinks', methods=['GET'])
+@app.route("/drinks")
 def get_drinks():
-    drinks = Drink.query.all()
-
-    return jsonify({
-    'success':True,
-    'drinks': [drink.short() for drink in drinks]
-    }), 200
+    drinks = list(map(Drink.short, Drink.query.all()))
+    result = {
+        "success": True,
+        "drinks": drinks
+    }
+    return jsonify(result)
 
 
 
@@ -61,27 +61,19 @@ def get_drinks_detail(payload):       #pass in payload
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks', methods=['POST'])
-@requires_auth('post:drinks')
-def create_drink(payload):          #pass in payload
-    data = request.get_json()
-    if 'title ' and 'recipe' not in data:
-        abort(422)
-
-    recipe_data = data['recipe']
-
-
-    recipe_data = [recipe_data]
-
-    drink = Drink()
-    drink.title = data['title']
-    drink.recipe = json.dumps(recipe_data)
-    drink.insert()
-
-    return jsonify({
-        'success': True,
-        'drink': Drink.long(drink)
-    })
+@app.route("/drinks", methods=['POST'])
+@requires_auth("post:drinks")
+def add_drinks(token):
+    if request.data:
+        new_drink_data = json.loads(request.data.decode('utf-8'))
+        new_drink = Drink(title=new_drink_data['title'], recipe=json.dumps(new_drink_data['recipe']))
+        Drink.insert(new_drink)
+        drinks = list(map(Drink.long, Drink.query.all()))
+        result = {
+            "success": True,
+            "drinks": drinks
+        }
+        return jsonify(result)
 
 
 

@@ -79,7 +79,7 @@ def check_permissions(permission, payload):
         'code': 'unauthorised',
         'description': 'Permission not found'
 
-        }, 403 )
+        }, 401 )
     return True
 
 
