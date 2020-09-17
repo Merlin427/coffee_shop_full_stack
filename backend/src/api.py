@@ -45,7 +45,7 @@ def get_drinks_detail(payload):       #pass in payload
 
     return jsonify({
     'success': True,
-    'drinks-detail':[drink.long() for drink in drinks]
+    'drinks':[drink.long() for drink in drinks]
     }), 200
 
 
